@@ -1,0 +1,121 @@
+// 🎨 TRACEABILITY — UI POLISH + SOUND + ANIMATION
+// Drop-in improvements (Tailwind-based)
+
+// =========================
+// src/hooks/useSound.js
+// =========================
+export const useSound = () => {
+  const play = (url) => {
+    try {
+      const a = new Audio(url);
+      a.volume = 0.4;
+      a.play().catch(()=>{});
+    } catch {}
+  };
+  return {
+    success: () => play("https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3"),
+    tap: () => play("https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3")
+  };
+};
+
+
+// =========================
+// src/components/AnimatedButton.jsx
+// =========================
+export default function AnimatedButton({ children, onClick }) {
+  return (
+    <button
+      onClick={onClick}
+      className="px-6 py-3 rounded-2xl bg-orange-400 text-white font-bold shadow-lg
+                 transition active:scale-95 hover:scale-105 hover:bg-orange-500"
+    >
+      {children}
+    </button>
+  );
+}
+
+
+// =========================
+// src/components/SuccessModal.jsx
+// =========================
+export default function SuccessModal({ score, onNext }) {
+  return (
+    <div className="absolute inset-0 flex items-center justify-center bg-white/40 backdrop-blur">
+      <div className="bg-white p-8 rounded-3xl shadow-2xl text-center animate-bounce">
+        <div className="text-6xl mb-2">🏆</div>
+        <h2 className="text-2xl font-bold text-green-500">LUAR BIASA!</h2>
+        <p className="text-gray-500 mt-2">Skor kamu</p>
+        <div className="text-3xl font-bold text-blue-500">{score}%</div>
+        <button
+          onClick={onNext}
+          className="mt-4 px-5 py-2 bg-green-400 text-white rounded-xl"
+        >
+          Lanjut
+        </button>
+      </div>
+    </div>
+  );
+}
+
+
+// =========================
+// UPDATE TracingEngine.jsx (UI + SOUND)
+// =========================
+import { useSound } from "../hooks/useSound";
+import SuccessModal from "./SuccessModal";
+
+// inside component:
+const sound = useSound();
+
+// when hit point:
+sound.tap();
+
+// when finished:
+sound.success();
+
+// replace success overlay with:
+{finished && <SuccessModal score={score} onNext={()=>onFinish(score)} />}
+
+
+// =========================
+// src/App.jsx (UI POLISH)
+// =========================
+// wrap main container
+<div className="min-h-screen bg-gradient-to-br from-orange-100 to-yellow-50 flex items-center justify-center">
+
+// Home screen style
+<div className="bg-white p-8 rounded-3xl shadow-2xl text-center max-w-md w-full">
+  <h1 className="text-4xl font-black text-orange-500">TraceAbility ✨</h1>
+  <p className="text-gray-500 mt-2">Belajar menulis jadi seru 🎉</p>
+
+  <div className="mt-4 bg-yellow-100 text-yellow-600 px-4 py-2 rounded-full inline-block font-bold">
+    ⭐ {progress.length} bintang
+  </div>
+
+  <AnimatedButton onClick={()=>setScreen("level")}>Mulai</AnimatedButton>
+</div>
+
+
+// =========================
+// ADD GLOBAL ANIMATION (styles.css)
+// =========================
+@keyframes pop {
+  0% { transform: scale(0.8); opacity: 0 }
+  100% { transform: scale(1); opacity: 1 }
+}
+
+.animate-pop {
+  animation: pop 0.3s ease-out;
+}
+
+
+// =========================
+// FINAL RESULT 🎯
+// =========================
+// ✨ Smooth animations
+// 🔊 Sound feedback
+// 🎮 Game-like UI
+// 📱 Mobile-friendly aesthetic
+
+// Your app now feels like:
+// → Duolingo-style learning app 🚀
